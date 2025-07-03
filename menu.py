@@ -1,20 +1,23 @@
 import pygame
 import pygame.mixer
-from colores import BLANCO, AMARILLO, COLOR_BOTON, COLOR_HOVER, ROJO
-from utils import esta_sobre, reproducir_sonido_boton, cambio_color_boton, actualizar_sonido
+from constantes import ANCHO, ALTO, FPS,BLANCO, AMARILLO, ROJO
+from utils import esta_sobre, reproducir_sonido_boton, cambio_color_boton, actualizar_sonido, mostrar_creditos
 
 sonido_hover = pygame.mixer.Sound("assets/musica/hover.wav")
 sonido_click = pygame.mixer.Sound("assets/musica/seleccion.wav")
+creditos = [
+    "Erik Ramirez",
+    "Santiago Oggioni",
+    "Andres Cespedes"
+]
 
-ANCHO = 480
-ALTO = 700
-FPS = 60
+pantalla = pygame.display.set_mode((ANCHO, ALTO))
 
 def mostrar_menu():
     pygame.mixer.music.load("assets/musica/musica_menu.ogg")
     pygame.mixer.music.play(-1)
  
-    pantalla = pygame.display.set_mode((ANCHO, ALTO))
+    pantalla 
     pygame.display.set_caption("Monster hunter")
     reloj = pygame.time.Clock()
     fuente_menu = pygame.font.Font("assets/fuentes/arcade_font.ttf", 34)
@@ -33,7 +36,7 @@ def mostrar_menu():
     
     
     
-    fondo = pygame.image.load("assets/fondo_menu.jpg")
+    fondo = pygame.image.load("assets/fondo_menu2.jpg")
     fondo = pygame.transform.scale(fondo, (ANCHO, ALTO))
     
     botones = [
@@ -75,6 +78,9 @@ def mostrar_menu():
                 
                 if boton["texto"] == "Salir":
                     en_menu = False
+                elif boton["texto"] == "Creditos":
+                    mostrar_creditos(pantalla, creditos, reloj)
+                    
                     
             texto_renderizado = fuente_menu.render(boton["texto"], True, color_texto)
             pantalla.blit(texto_renderizado, (boton["x"], boton["y"]))

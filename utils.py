@@ -1,4 +1,5 @@
 import pygame
+from constantes import ANCHO, ALTO, BLANCO
 def esta_sobre(mouseX, mouseY, boton):
     return (mouseX >= boton["x"] and mouseX <= boton["x"] + boton["ancho"] and \
             mouseY >= boton["y"] and mouseY <= boton["y"] + boton["alto"])
@@ -40,3 +41,34 @@ def actualizar_sonido(eventos, mouseX, mouseY, icono_rect, sonido_activado, soni
                     return True
     
     return sonido_activado
+
+def mostrar_creditos(pantalla, lista_nombres, reloj):
+    fondo = pygame.image.load("assets/fondo_creditos.jpg")
+    fuente = pygame.font.Font("assets/fuentes/arcade_font.ttf", 36)
+    
+    offset_y = ALTO
+    
+    velocidad_scroll = 1 
+    espacio_entre_lineas = 50
+    
+    en_creditos  = True
+    while en_creditos:
+        pantalla.blit(fondo, (0, 0))
+        
+        for i, nombre in enumerate(lista_nombres):
+            render = fuente.render(nombre, True, BLANCO)
+            x = (ANCHO - render.get_width()) // 2
+            y = offset_y + i * espacio_entre_lineas
+            pantalla.blit(render, (x, y))
+            
+        offset_y -= velocidad_scroll
+        
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                en_creditos = False
+            if evento.type == pygame.KEYDOWN and evento.key == pygame.K_ESCAPE:
+                en_creditos = False
+                
+        pygame.display.update()
+        reloj.tick(60)
+        
