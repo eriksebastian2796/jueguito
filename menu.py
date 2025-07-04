@@ -11,9 +11,7 @@ creditos = [
     "Andres Cespedes"
 ]
 
-pantalla = pygame.display.set_mode((ANCHO, ALTO))
-
-def mostrar_menu():
+def mostrar_menu(pantalla):
     pygame.mixer.music.load("assets/musica/musica_menu.ogg")
     pygame.mixer.music.play(-1)
  

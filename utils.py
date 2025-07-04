@@ -71,4 +71,4 @@ def mostrar_creditos(pantalla, lista_nombres, reloj):
                 
         pygame.display.update()
         reloj.tick(60)
-        
+           
