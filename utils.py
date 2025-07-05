@@ -45,11 +45,14 @@ def actualizar_sonido(eventos, mouseX, mouseY, icono_rect, sonido_activado, soni
 def mostrar_creditos(pantalla, lista_nombres, reloj):
     fondo = pygame.image.load("assets/fondo_creditos.jpg")
     fuente = pygame.font.Font("assets/fuentes/arcade_font.ttf", 36)
+    fuente2 = pygame.font.Font("assets/fuentes/arcade_font.ttf", 25)
     
-    offset_y = ALTO
+    volver_a_menu = "Presione ESC para volver al menu"
     
-    velocidad_scroll = 1 
-    espacio_entre_lineas = 50
+    inicio_creditos_eje_y = ALTO
+    
+    velocidad_scroll = 0.8
+    espacio_entre_lineas = 80
     
     en_creditos  = True
     while en_creditos:
@@ -58,11 +61,22 @@ def mostrar_creditos(pantalla, lista_nombres, reloj):
         for i, nombre in enumerate(lista_nombres):
             render = fuente.render(nombre, True, BLANCO)
             x = (ANCHO - render.get_width()) // 2
-            y = offset_y + i * espacio_entre_lineas
+            y = inicio_creditos_eje_y + i * espacio_entre_lineas
+            pantalla.blit(render, (x, y))
+       
+          
+        if y > 400:
+            inicio_creditos_eje_y -= velocidad_scroll
+        else:
+            velocidad_scroll = 0
+            render = fuente2.render(volver_a_menu, True, (209 , 160 , 75))
+            x = (ANCHO - render.get_width()) // 2
+            y = 600
             pantalla.blit(render, (x, y))
             
-        offset_y -= velocidad_scroll
         
+        
+               
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 en_creditos = False
