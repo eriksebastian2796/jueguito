@@ -2,6 +2,7 @@ import pygame
 import pygame.mixer
 from constantes import ANCHO, ALTO, FPS,BLANCO, AMARILLO, ROJO
 from utils import esta_sobre, reproducir_sonido_boton, cambio_color_boton, actualizar_sonido, mostrar_creditos
+from test import juego, mostrar_ranking
 
 sonido_hover = pygame.mixer.Sound("assets/musica/hover.wav")
 sonido_click = pygame.mixer.Sound("assets/musica/seleccion.wav")
@@ -78,6 +79,12 @@ def mostrar_menu(pantalla):
                     en_menu = False
                 elif boton["texto"] == "Creditos":
                     mostrar_creditos(pantalla, creditos, reloj)
+                elif boton["texto"] == "Jugar":
+                    juego(pantalla)
+                elif boton["texto"] == "Ranking":
+                    mostrar_ranking()
+                
+                
                     
                     
             texto_renderizado = fuente_menu.render(boton["texto"], True, color_texto)
