@@ -42,10 +42,10 @@ def actualizar_sonido(eventos, mouseX, mouseY, icono_rect, sonido_activado, soni
     
     return sonido_activado
 
-def mostrar_creditos(pantalla, lista_nombres, reloj):
-    fondo = pygame.image.load("assets/fondo_creditos.jpg")
-    fuente = pygame.font.Font("assets/fuentes/arcade_font.ttf", 36)
-    fuente2 = pygame.font.Font("assets/fuentes/arcade_font.ttf", 25)
+def mostrar_creditos(pantalla, lista_nombres, reloj, FUENTE_MENU):
+    fondo = pygame.image.load("assets/fondos/fondo_creditos.jpg")
+    fuente = pygame.font.Font(FUENTE_MENU, 36)
+    fuente2 = pygame.font.Font(FUENTE_MENU, 25)
     
     volver_a_menu = "Presione ESC para volver al menu"
     

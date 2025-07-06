@@ -1,8 +1,8 @@
 import pygame
 import pygame.mixer
-from constantes import ANCHO, ALTO, FPS,BLANCO, AMARILLO, ROJO
+from constantes import ANCHO, ALTO, FPS,BLANCO, AMARILLO, ROJO, FUENTE_MENU
 from utils import esta_sobre, reproducir_sonido_boton, cambio_color_boton, actualizar_sonido, mostrar_creditos
-from test import juego, mostrar_ranking
+from ranking import mostrar_ranking
 
 sonido_hover = pygame.mixer.Sound("assets/musica/hover.wav")
 sonido_click = pygame.mixer.Sound("assets/musica/seleccion.wav")
@@ -16,11 +16,11 @@ def mostrar_menu(pantalla):
     pygame.mixer.music.load("assets/musica/musica_menu.ogg")
     pygame.mixer.music.play(-1)
  
-    pantalla 
     pygame.display.set_caption("Monster hunter")
     reloj = pygame.time.Clock()
-    fuente_menu = pygame.font.Font("assets/fuentes/arcade_font.ttf", 34)
-    titulo_img = pygame.image.load("assets/Titulo.png")
+    fuente_principal_grande = pygame.font.Font(FUENTE_MENU, 34)
+    fuente_principal_chica = pygame.font.Font(FUENTE_MENU, 22)
+    titulo_img = pygame.image.load("assets/fuentes/Titulo.png")
     titulo_img = pygame.transform.scale(titulo_img, (400, 400))
     
     sonido_on_img = pygame.image.load("assets/iconos/sonido_on.png")
@@ -35,14 +35,14 @@ def mostrar_menu(pantalla):
     
     
     
-    fondo = pygame.image.load("assets/fondo_menu2.jpg")
+    fondo = pygame.image.load("assets/fondos/fondo_menu.jpg")
     fondo = pygame.transform.scale(fondo, (ANCHO, ALTO))
     
     botones = [
-        {"texto": "Jugar", "x": 185, "y": 450, "ancho": 200, "alto": 60},
-        {"texto": "Ranking", "x": 170, "y": 500, "ancho": 200, "alto": 60},
-        {"texto": "Creditos", "x": 170, "y": 550, "ancho": 200, "alto": 60},
-        {"texto": "Salir", "x": 185, "y": 600, "ancho": 200, "alto": 60}
+        {"texto": "Jugar", "x": 185, "y": 450, "ancho": 100, "alto": 35},
+        {"texto": "Ranking", "x": 170, "y": 500, "ancho": 130, "alto": 35},
+        {"texto": "Creditos", "x": 170, "y": 550, "ancho": 140, "alto": 35},
+        {"texto": "Salir", "x": 185, "y": 600, "ancho": 100, "alto": 35}
     ]
     
     
@@ -78,16 +78,14 @@ def mostrar_menu(pantalla):
                 if boton["texto"] == "Salir":
                     en_menu = False
                 elif boton["texto"] == "Creditos":
-                    mostrar_creditos(pantalla, creditos, reloj)
-                elif boton["texto"] == "Jugar":
-                    juego(pantalla)
+                    mostrar_creditos(pantalla, creditos, reloj, FUENTE_MENU)
                 elif boton["texto"] == "Ranking":
-                    mostrar_ranking()
+                    mostrar_ranking(pantalla, fuente_principal_chica)
                 
                 
                     
                     
-            texto_renderizado = fuente_menu.render(boton["texto"], True, color_texto)
+            texto_renderizado = fuente_principal_grande.render(boton["texto"], True, color_texto)
             pantalla.blit(texto_renderizado, (boton["x"], boton["y"]))
         
         if sonido_activado:
