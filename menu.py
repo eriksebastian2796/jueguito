@@ -66,13 +66,14 @@ def mostrar_menu(pantalla):
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 click_realizado = True
                 
-        sonido_activado = actualizar_sonido(eventos, mouseX, mouseY, icono_sonido, sonido_activado, sonido_on_img, sonido_off_img)
+        sonido_activado = actualizar_sonido(eventos, mouseX, mouseY, icono_sonido, sonido_activado)
             
         for boton in botones:
-            reproducir_sonido_boton(mouseX, mouseY, boton, click_realizado, sonido_hover, sonido_click)
-            color_texto = cambio_color_boton(mouseX, mouseY, boton, click_realizado, BLANCO, ROJO, AMARILLO)
+            mouse_pos = (mouseX, mouseY)
+            reproducir_sonido_boton(mouse_pos, boton, click_realizado, sonido_hover, sonido_click)
+            color_texto = cambio_color_boton(mouse_pos, boton, click_realizado, BLANCO, ROJO, AMARILLO)
             
-            if click_realizado and esta_sobre(mouseX, mouseY, boton):
+            if click_realizado and esta_sobre(mouse_pos, boton):
                 
                 
                 if boton["texto"] == "Salir":
@@ -80,7 +81,7 @@ def mostrar_menu(pantalla):
                 elif boton["texto"] == "Creditos":
                     mostrar_creditos(pantalla, creditos, reloj, FUENTE_MENU)
                 elif boton["texto"] == "Ranking":
-                    mostrar_ranking(pantalla, fuente_principal_chica)
+                    mostrar_ranking(pantalla, fuente_principal_chica, fondo)
                 
                 
                     

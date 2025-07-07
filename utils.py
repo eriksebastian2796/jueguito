@@ -1,11 +1,45 @@
+"""Modulos con funciones utilitarias de sonido y botones
+"""
+
 import pygame
 from constantes import ANCHO, ALTO, BLANCO
-def esta_sobre(mouseX, mouseY, boton):
-    return (mouseX >= boton["x"] and mouseX <= boton["x"] + boton["ancho"] and \
-            mouseY >= boton["y"] and mouseY <= boton["y"] + boton["alto"])
+def esta_sobre(mouse_pos : tuple, boton : dict)-> bool:
     
-def cambio_color_boton(mouseX, mouseY, boton, click_realizado, color_normal, color_hover, color_click):
-    esta_hover = esta_sobre(mouseX, mouseY, boton)
+    """
+    Crea un rectángulo a partir de las coordenadas y dimensiones del botón
+    y comprueba si la posición actual del mouse se encuentra dentro de ese área.
+
+    Args:
+        mouse_pos (tuple): Una tupla (x, y) con la posición actual del mouse.
+        boton (dict): Diccionario que representa un botón.
+            Debe contener las claves "x", "y", "ancho" y "alto".
+
+    Returns:
+        bool: True si el mouse está sobre el botón, False en caso contrario.
+    """
+    
+    rect = pygame.Rect(boton["x"], boton["y"], boton["ancho"], boton["alto"])
+    return rect.collidepoint(mouse_pos)
+    
+def cambio_color_boton(mouse_pos : tuple, boton :  dict,\
+    click_realizado : bool, color_normal : tuple,\
+    color_hover : tuple, color_click : tuple)-> tuple:
+    
+    esta_hover = esta_sobre(mouse_pos, boton)
+    
+    """
+    Cambia el color del texto del botón dependiendo de si el mouse está encima
+    (hover) o si se hizo clic. Si no hay interacción, se usa el color normal.
+
+    Args:
+        mouse_pos (tuple): Posición actual del mouse como una tupla (x, y).
+        boton (dict): Diccionario con las claves "x", "y", "ancho" y "alto" que representa un botón.
+        click_realizado (bool): True si se hizo clic con el mouse, False en caso contrario.
+        [color_normal, color_hover,color_click (tuple)]
+
+    Returns:
+        tuple: El color que debe usarse actualmente para el botón.
+    """
      
     if esta_hover:
         if click_realizado:
@@ -14,12 +48,31 @@ def cambio_color_boton(mouseX, mouseY, boton, click_realizado, color_normal, col
             return color_hover
     return color_normal
 
-def reproducir_sonido_boton(mouseX, mouseY, boton, click_realizado, sonido_hover, sonido_click):
-    if (mouseX >= boton["x"] and mouseX <= boton["x"] + boton["ancho"] and \
-        mouseY >= boton["y"] and mouseY <= boton["y"] + boton["alto"]):
+def reproducir_sonido_boton(mouse_pos : tuple, boton : dict,\
+    click_realizado : bool, sonido_hover : pygame.mixer.Sound,\
+    sonido_click : pygame.mixer.Sound):
+    
+    """
+    Reproduce efectos de sonido cuando el mouse interactúa con un botón.
+
+    Usa una clave adicional `"hover_activo"` en el diccionario del botón para 
+    controlar si ya se reprodujo el sonido de hover y evitar repeticiones innecesarias.
+
+    Args:
+        mouse_pos (tuple): Posición actual del mouse como (x, y).
+        boton (dict): Diccionario con las claves "x", "y", "ancho", "alto"
+                      y opcionalmente "hover_activo" para seguimiento de sonido.
+        click_realizado (bool): True si se hizo clic con el mouse, False si no.
+        sonido_hover (pygame.mixer.Sound): Sonido a reproducir al pasar el mouse por el botón.
+        sonido_click (pygame.mixer.Sound): Sonido a reproducir al hacer clic sobre el botón.
+
+    """
+    
+    if esta_sobre(mouse_pos, boton):
         
         if not boton.get("hover_activo", False):
             sonido_hover.play()
+            #sonido hover, es el sonido que hace cuando pasamos el mouse por encima
             boton["hover_activo"] = True
             
         if click_realizado:
@@ -27,11 +80,27 @@ def reproducir_sonido_boton(mouseX, mouseY, boton, click_realizado, sonido_hover
     else:
         boton["hover_activo"] = False
         
-def actualizar_sonido(eventos, mouseX, mouseY, icono_rect, sonido_activado, sonido_on_img, sonido_off_img):
+def actualizar_sonido(eventos : list, mouseX : int, mouseY : int,\
+    icono_rect : pygame.Rect, sonido_activado: bool)-> bool:
+    
+    """
+    Alterna el estado del sonido al hacer clic sobre el ícono correspondiente.
+    Utea o desmutea el juego.
+    Args:
+        eventos (list): Lista de eventos capturados por pygame.event.get().
+        mouseX (int): Posición X actual del mouse.
+        mouseY (int): Posición Y actual del mouse.
+        icono_rect (pygame.Rect): Rectángulo del área del ícono de sonido.
+        sonido_activado (bool): Estado actual del sonido (True si está activado).
+        sonido_on_img (pygame.Surface): Imagen del ícono cuando el sonido está activado.
+        sonido_off_img (pygame.Surface): Imagen del ícono cuando el sonido está desactivado.
+    Returns:
+        bool: Nuevo estado del sonido (True si está activado, False si está silenciado).
+    """
+    
     for evento in eventos:
         if evento.type == pygame.MOUSEBUTTONDOWN:
-            if (mouseX >= icono_rect.x and mouseX <= icono_rect.x + icono_rect.width and \
-                mouseY >= icono_rect.y and mouseY <= icono_rect.y + icono_rect.height):
+            if icono_rect.collidepoint((mouseX, mouseY)):
                 
                 if sonido_activado:
                     pygame.mixer.music.set_volume(0)
@@ -42,8 +111,24 @@ def actualizar_sonido(eventos, mouseX, mouseY, icono_rect, sonido_activado, soni
     
     return sonido_activado
 
-def mostrar_creditos(pantalla, lista_nombres, reloj, FUENTE_MENU):
+def mostrar_creditos(pantalla : pygame.Surface, lista_nombres : list,\
+    reloj : pygame.time.Clock, FUENTE_MENU : str):
+    
+    """
+    Muestra en pantalla los créditos del juego con efecto de scroll hacia arriba.
+    Los nombres se desplazan verticalmente desde abajo hacia el centro de la pantalla.
+    Una vez que los nombres llegan a cierta altura, se detiene el scroll y se muestra
+    un mensaje indicando que se puede volver al menú presionando la tecla ESC.
+
+    Args:
+        pantalla (pygame.Surface): Superficie principal donde se dibujan los elementos.
+        lista_nombres (list): Lista de nombres (strings) a mostrar en los créditos.
+        reloj (pygame.time.Clock): Objeto Clock de Pygame para controlar los FPS.
+        FUENTE_MENU (str): Ruta de la fuente utilizada para los créditos.
+    """
+    
     fondo = pygame.image.load("assets/fondos/fondo_creditos.jpg")
+    fondo = pygame.transform.scale(fondo, (ANCHO, ALTO))
     fuente = pygame.font.Font(FUENTE_MENU, 36)
     fuente2 = pygame.font.Font(FUENTE_MENU, 25)
     
@@ -56,8 +141,10 @@ def mostrar_creditos(pantalla, lista_nombres, reloj, FUENTE_MENU):
     
     en_creditos  = True
     while en_creditos:
+        fondo = pygame.transform.scale(fondo, (ANCHO, ALTO))
         pantalla.blit(fondo, (0, 0))
         
+        #Recorre lista_nombres con enumerate, que da un índice [i] y un nombre
         for i, nombre in enumerate(lista_nombres):
             render = fuente.render(nombre, True, BLANCO)
             x = (ANCHO - render.get_width()) // 2
@@ -66,8 +153,12 @@ def mostrar_creditos(pantalla, lista_nombres, reloj, FUENTE_MENU):
        
           
         if y > 400:
+            #cuando los nombres todavía no llegaron al centro de la pantalla...
+            #Se mueven hacia arriba restando un poquito a inicio_creditos_eje_y en cada frame.
+            
             inicio_creditos_eje_y -= velocidad_scroll
         else:
+            #Se detiene el scroll cuando los nombres llegan al centro de la pantalla
             velocidad_scroll = 0
             render = fuente2.render(volver_a_menu, True, (209 , 160 , 75))
             x = (ANCHO - render.get_width()) // 2
