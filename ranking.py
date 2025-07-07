@@ -6,9 +6,46 @@ de los mejores puntajes de los jugadores
 import json
 import os
 import pygame
-from Config.CONSTANTES import ANCHO, ALTO, BLANCO
+from Config.CONSTANTES import ANCHO, ALTO, BLANCO, NEGRO
 
 ARCHIVO_PUNTOS = "puntuaciones1.json"
+
+def pedir_nombre(pantalla):
+    nombre = ""
+    font = pygame.font.Font(None, 36)
+    reloj = pygame.time.Clock()
+
+    while True:
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_RETURN and nombre:
+                    return nombre
+                if evento.key == pygame.K_BACKSPACE:
+                    nombre = nombre[:-1]
+                if evento.unicode.isalnum() or evento.unicode == " ":
+                    if len(nombre) < 12:
+                        nombre += evento.unicode
+
+        pantalla.fill(NEGRO)
+        pantalla.blit(font.render("¡Perdiste! Ingresa tu nombre:", True, BLANCO), (ANCHO // 2 - 150, 200))
+        pantalla.blit(font.render(nombre + "|", True, BLANCO), (ANCHO // 2 - 100, 300))
+        pygame.display.flip()
+        reloj.tick(60)
+    return nombre
+
+def guardar_puntaje(nombre, puntos):
+    ranking = cargar_puntuaciones()
+    ranking.append({"nombre": nombre, "puntuacion": puntos})
+    for i in range(len(ranking)):
+        for j in range(i + 1, len(ranking)):
+            if ranking[j]["puntuacion"] > ranking[i]["puntuacion"]:
+                ranking[i], ranking[j] = ranking[j], ranking[i]
+    with open(ARCHIVO_PUNTOS, "w") as f:
+        json.dump(ranking, f)
+
 def dibujar_texto(superficie : pygame.Surface, texto : str, x : int,\
     y : int, color : tuple, fuente : pygame.font.Font):
     

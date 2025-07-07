@@ -40,13 +40,11 @@ def mover_murcielagos(lista_murcielagos: list [dict] , ANCHO: int)-> None:
         if murcielago["y"] > ALTO:
             lista_murcielagos.remove(murcielago)
 
-def dibujar_murcielagos(pantalla: pygame.Surface, lista_murcielagos: list [dict], frames_base: list[pygame.Surface]):
-    cantidad_frames = len(frames_base)
-    
+def dibujar_murcielagos(pantalla: pygame.Surface, lista_murcielagos: list [dict], frames_murcielago: list[pygame.Surface]):
     for murcielago in lista_murcielagos:
         
         frame_actual = murcielago["frame"]
-        imagen_original = frames_base[frame_actual]
+        imagen_original = frames_murcielago[frame_actual]
         
         if murcielago["direccion"] == "derecha":
             imagen = pygame.transform.flip(imagen_original, True, False)
@@ -55,7 +53,11 @@ def dibujar_murcielagos(pantalla: pygame.Surface, lista_murcielagos: list [dict]
         
         pantalla.blit(imagen, (murcielago["x"], murcielago["y"]))
         
+def cambiar_frame_murcielago(lista_murcielagos: list[dict])-> bool:
+    for murcielago in lista_murcielagos:
+        frame_actual = murcielago["frame"]
         nuevo_frame = frame_actual + 1
-        if nuevo_frame >= cantidad_frames:
+        if nuevo_frame >= 8:
             nuevo_frame = 0
         murcielago["frame"] = nuevo_frame
+    return False
