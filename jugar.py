@@ -96,9 +96,3 @@ def jugar(pantalla: pygame.Surface):
     pygame.quit()
 
 pygame.init()
-
-#De acá para abajo se va, es solo para probarlo
-
-pantalla = pygame.display.set_mode((ANCHO, ALTO))
-pygame.display.set_caption("Monsters Hunter")
-jugar(pantalla)
