@@ -1,4 +1,5 @@
 import pygame
+from ranking import pedir_nombre, guardar_puntaje
 
 from utils import (cargar_frames,
                    detectar_colisiones)
@@ -41,6 +42,7 @@ def jugar(pantalla: pygame.Surface):
     
     murcielagos = []
     tiros = []
+    score = 0
 
     frames_murcielago = cargar_frames(r"assets\Imagenes\Murcielago\bat", 8)
     frames_van = cargar_frames(r"assets\Imagenes\personaje\walk", 5)
@@ -92,6 +94,8 @@ def jugar(pantalla: pygame.Surface):
 
         pygame.display.flip()
         reloj.tick(FPS)
+    nombre = pedir_nombre(pantalla)
+    guardar_puntaje(nombre, score)
 
     pygame.quit()
 

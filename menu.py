@@ -1,6 +1,8 @@
 import pygame
 from colores import BLANCO, AMARILLO, COLOR_BOTON, COLOR_HOVER, ROJO
+from jugar import jugar
 from utils import esta_sobre
+from ranking import mostrar_ranking
 
 sonido_hover = pygame.mixer.Sound("assets/musica/hover.wav")
 sonido_click = pygame.mixer.Sound("assets/musica/seleccion.wav")
@@ -38,8 +40,7 @@ def mostrar_menu():
     while en_menu:
         pantalla.blit(fondo, (0, 0))
         pantalla.blit(titulo_img, (40 , 10))
-        
-        
+                
         mouseX, mouseY = pygame.mouse.get_pos()
         click_realizado = False
         
@@ -58,14 +59,19 @@ def mostrar_menu():
             elif not esta_hover:
                 boton["hover_activo"] = False
             
+            
+
             color_texto = BLANCO
             if esta_hover:
                 if click_realizado:
                     color_texto = AMARILLO        
                     sonido_click.play()
                     if esta_sobre(mouseX, mouseY, boton):
+                        
                         if boton["texto"] == "Salir":
                             en_menu = False
+                        elif boton["texto"] == "Ranking":
+                            mostrar_ranking(pantalla)
                         # Agrega el resto de condiciones con funciones llamando a la logica que arman lo chicos
                 
                 else:
