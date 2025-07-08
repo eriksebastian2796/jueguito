@@ -1,4 +1,4 @@
-def intro():
+def entre_menu_y_juego():
     pygame.mixer.music.load("assets/musica/musica_menu.ogg")
     pygame.mixer.music.play(-1)
  
