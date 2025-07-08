@@ -8,7 +8,8 @@ from Config.CONSTANTES import (ANCHO,
                                ALTO,
                                FPS,
                                SEGUNDO,
-                               TIEMPO_NUEVO_MURCIELAGO)
+                               TIEMPO_NUEVO_MURCIELAGO,
+                               TIEMPO_SUMAR_DIFICULTAD)
 
 from personajes.van_hellsing import (mover_personaje,
                                      van_hellsing,
@@ -27,15 +28,27 @@ from tiros.propios import (disparar,
                            dibujar_tiros,
                            )
 
+from vidas import (dibujar_vidas_vh, 
+                   dibujar_vidas_boss)
+
+from musica import (iniciar_batalla_murcielagos,
+                    iniciar_boss,
+                    sonido_impacto,
+                    sonido_disparo,
+                    sonido_vida)
+
 from ranking import (pedir_nombre,
                      guardar_puntaje)
 
 def jugar(pantalla: pygame.Surface):
 
-    fondo = pygame.image.load(r"assets\Imagenes\Fondo\Fondo.jpeg")
+    jugando = True
+    van_hellsing["vidas"] = 5
+    iniciar_batalla_murcielagos()
+
+    fondo = pygame.image.load(r"assets\Imagenes\Fondo\Fondo_8bit2.jpg")
     fondo = pygame.transform.scale(fondo, (480, 800))
 
-    #Seteo timer 
     reloj = pygame.time.Clock()
 
     evento_tiempo = pygame.USEREVENT + 1
@@ -57,12 +70,13 @@ def jugar(pantalla: pygame.Surface):
     
     flag_frames_vam = False
     flag_frames_murcielago = False
-    jugando = True
     
     while jugando:
-
+        
         pantalla.blit(fondo, (0,0))
         
+        nivel = tiempo_de_juego // TIEMPO_SUMAR_DIFICULTAD
+
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 jugando = False
@@ -70,6 +84,7 @@ def jugar(pantalla: pygame.Surface):
             if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_SPACE:
                     tiros.append(disparar(van_hellsing["x"], van_hellsing["y"]))
+                    sonido_disparo()
                     actualizar_frame(disparo=True)
                     
             if evento.type == evento_tiempo:
@@ -79,6 +94,7 @@ def jugar(pantalla: pygame.Surface):
             if evento.type == evento_frame:
                 flag_frames_vam = True
                 flag_frames_murcielago = True
+        
 
         keys = pygame.key.get_pressed()
 
@@ -101,17 +117,29 @@ def jugar(pantalla: pygame.Surface):
             mover_personaje("abajo")  
 
         if timer_murcielago >= TIEMPO_NUEVO_MURCIELAGO:
-            murcielagos.append(crear_murcielago())
-            timer_murcielago = 0
+            murcielagos.append(crear_murcielago(nivel))
+
+            if nivel < TIEMPO_NUEVO_MURCIELAGO - 1:
+                timer_murcielago = nivel
+            else:
+                timer_murcielago = TIEMPO_NUEVO_MURCIELAGO - 1
 
         mover_murcielagos(murcielagos, ANCHO)
         
         mover_tiros(tiros)
 
-        puntaje += detectar_colisiones(tiros, murcielagos, frames_murcielago) *10
+        impacto_flecha = detectar_colisiones(tiros, murcielagos, frames_murcielago)
+
+        if impacto_flecha > 0:
+            puntaje += impacto_flecha *10
+            sonido_impacto()
         
         daño = detectar_colisiones_van(murcielagos, van_hellsing, frames_murcielago, frames_van)
+        if daño > 0:
+            sonido_vida()
         van_hellsing["vidas"] -= daño
+        if van_hellsing["vidas"] <= 0:
+            jugando = False
 
         if flag_frames_murcielago:
             flag_frames_murcielago = cambiar_frame_murcielago(murcielagos)
@@ -119,6 +147,7 @@ def jugar(pantalla: pygame.Surface):
         dibujar_murcielagos(pantalla, murcielagos, frames_murcielago)
         dibujar_personaje(pantalla, frames_van)
         dibujar_tiros(pantalla, tiros)
+        if van_hellsing["vidas"]> 0: dibujar_vidas_vh(pantalla, van_hellsing["vidas"])
 
         fuente = pygame.font.SysFont(None, 24)
         texto = fuente.render(f"Puntaje: {puntaje}", True, (255,255,255))
@@ -126,8 +155,6 @@ def jugar(pantalla: pygame.Surface):
 
         pygame.display.flip()
         reloj.tick(FPS)
-
-    nombre = pedir_nombre(pantalla)
-    guardar_puntaje(nombre, puntaje)
-
-    pygame.quit()
+    else:
+        nombre = pedir_nombre(pantalla)
+        guardar_puntaje(nombre, puntaje)

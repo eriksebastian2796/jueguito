@@ -189,7 +189,8 @@ def cargar_frames(ruta_carpeta: str, cantidad_frames: int)->list[pygame.Surface]
         
     return frames
 
-def detectar_colisiones(tiros: list[dict], murcielagos: list[dict], frames_murcielagos: list[pygame.Surface]):
+def detectar_colisiones(tiros: list[dict], murcielagos: list[dict], frames_murcielagos: list[pygame.Surface])-> int:
+    colisiones = 0
     for tiro in tiros:
         mask_tiro = pygame.mask.from_surface(tiro["imagen"])
         for murcielago in murcielagos:
@@ -199,6 +200,8 @@ def detectar_colisiones(tiros: list[dict], murcielagos: list[dict], frames_murci
             if mask_tiro.overlap(mask_murcielago, offset):
                 tiros.remove(tiro)
                 murcielagos.remove(murcielago)
+                colisiones += 1
+    return colisiones
 
 def detectar_colisiones_van(murcielagos: list[dict], van_hellsing: dict, frames_murcielagos: list[pygame.Surface], frames_van: list[pygame.Surface])-> int:
     colisiones = 0

@@ -3,7 +3,10 @@ import random
 from Config.CONSTANTES import (ANCHO,
                                ALTO)
 
-def crear_murcielago()-> dict:
+def crear_murcielago(nivel: int)-> dict:
+
+    if nivel > 8 : nivel = 8
+    
     x = random.randint(0, ANCHO)
     direccion = "izquierda"
     if random.randint(0, 1) == 1:
@@ -17,7 +20,7 @@ def crear_murcielago()-> dict:
         "direccion": direccion,
         "frame": 0,
         "velocidad_x": random.randint(1, 2),
-        "velocidad_y": 1
+        "velocidad_y": 1 + nivel
     }
     return murcielago
 

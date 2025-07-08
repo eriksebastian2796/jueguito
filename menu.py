@@ -1,12 +1,16 @@
 import pygame
 import pygame.mixer
 from Config.CONSTANTES import ANCHO, ALTO, FPS,BLANCO, AMARILLO, ROJO, FUENTE_MENU
-from utils import esta_sobre, reproducir_sonido_boton, cambio_color_boton, actualizar_sonido, mostrar_creditos
+
+from utils import (esta_sobre, 
+                   cambio_color_boton, 
+                   actualizar_sonido, 
+                   mostrar_creditos)
+
 from ranking import mostrar_ranking
+from musica import reproducir_musica, reproducir_sonido_boton
 from jugar import jugar
 
-sonido_hover = pygame.mixer.Sound("assets/musica/hover.wav")
-sonido_click = pygame.mixer.Sound("assets/musica/seleccion.wav")
 creditos = [
     "Erik Ramirez",
     "Santiago Oggioni",
@@ -14,10 +18,8 @@ creditos = [
 ]
 
 def mostrar_menu(pantalla):
-    pygame.mixer.music.load("assets/musica/musica_menu.ogg")
-    pygame.mixer.music.play(-1)
- 
-    pygame.display.set_caption("Monster hunter")
+    reproducir_musica("musica_menu.ogg", True)
+
     reloj = pygame.time.Clock()
     fuente_principal_grande = pygame.font.Font(FUENTE_MENU, 34)
     fuente_principal_chica = pygame.font.Font(FUENTE_MENU, 22)
@@ -71,7 +73,7 @@ def mostrar_menu(pantalla):
             
         for boton in botones:
             mouse_pos = (mouseX, mouseY)
-            reproducir_sonido_boton(mouse_pos, boton, click_realizado, sonido_hover, sonido_click)
+            reproducir_sonido_boton(mouse_pos, boton, click_realizado)
             color_texto = cambio_color_boton(mouse_pos, boton, click_realizado, BLANCO, ROJO, AMARILLO)
             
             if click_realizado and esta_sobre(mouse_pos, boton):

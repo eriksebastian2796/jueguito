@@ -1,4 +1,3 @@
-
 #Pantalla
 
 ANCHO = 480
@@ -18,4 +17,5 @@ FUENTE_MENU = "assets/fuentes/arcade_font.ttf"
 SEGUNDO = 1000
 
 TIEMPO_NUEVO_MURCIELAGO = 5
+TIEMPO_SUMAR_DIFICULTAD = 30
 
