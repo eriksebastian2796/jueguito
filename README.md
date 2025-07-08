@@ -14,8 +14,10 @@ Monsters Hunter es un juego arcade 2D desarrollado en **Python con Pygame**, don
 - Interfaz de menú: Jugar, Ranking, Créditos y Salir.
 
 ---
-```text
+
 ## Estructura del proyecto
+
+```text
 
 MonstersHunter/
 │
@@ -36,7 +38,7 @@ MonstersHunter/
 ├── utils.py                   # Funciones auxiliares compartidas
 ├── vidas.py                   # Lógica de control de vidas del jugador
 
-
+```
 ---
 
 ## Cómo jugar
