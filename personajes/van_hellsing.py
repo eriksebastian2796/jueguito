@@ -13,7 +13,7 @@ van_hellsing = {
     "direccion" : "izquierda",
     "limite_y" : 600, 
     "frame" : 0,
-    "vidas" : 3 ,
+    "vidas" : 5 ,
     "velocidad" : 4 ,
 }
 
@@ -41,7 +41,6 @@ def mover_personaje (flecha: str, personaje: dict = van_hellsing):
              van_hellsing["y"] = ALTO - van_hellsing["dimension"][1]
              
 def dibujar_personaje(pantalla: pygame.Surface, frames: list[pygame.Surface], personaje: dict = van_hellsing):
-    cantidad_frames = len(frames)
     
     frame_actual = van_hellsing["frame"]
     imagen_original = frames[frame_actual]

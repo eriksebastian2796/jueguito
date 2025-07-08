@@ -203,6 +203,19 @@ def detectar_colisiones(tiros: list[dict], murcielagos: list[dict], frames_murci
                 colisiones += 1
     return colisiones
 
+def detectar_colisiones_boss(tiros: list[dict], boss: dict, frames_boss: list[pygame.Surface])-> int:
+    colisiones = 0
+    frame_actual_boss = boss["frame"]
+    mask_boss = pygame.mask.from_surface(frames_boss[frame_actual_boss])
+
+    for tiro in tiros:
+        mask_tiro = pygame.mask.from_surface(tiro["imagen"])
+        offset = (tiro["x"] - boss["x"] ,tiro["y"] - boss["y"])
+        if mask_boss.overlap(mask_tiro, offset):
+            colisiones += 1
+            tiros.remove(tiro)
+    return colisiones
+
 def detectar_colisiones_van(murcielagos: list[dict], van_hellsing: dict, frames_murcielagos: list[pygame.Surface], frames_van: list[pygame.Surface])-> int:
     colisiones = 0
     frame_actual_van = van_hellsing["frame"]
@@ -216,3 +229,18 @@ def detectar_colisiones_van(murcielagos: list[dict], van_hellsing: dict, frames_
             colisiones += 1
             murcielagos.remove(murcielago)
     return colisiones
+
+def detectar_colisiones_van_fuego(tiros_boss: list[dict], van_hellsing: dict, frames_fuego: list[pygame.Surface], frames_van: list[pygame.Surface])-> int:
+    colisiones = 0
+    frame_actual_van = van_hellsing["frame"]
+    mask_van = pygame.mask.from_surface(frames_van[frame_actual_van])
+
+    for tiro in tiros_boss:
+        frame_actual_fuego = tiro["frame"]
+        mask_fuego = pygame.mask.from_surface(frames_fuego[frame_actual_fuego])
+        offset = (tiro["x"] - van_hellsing["x"] ,tiro["y"] - van_hellsing["y"])
+        if mask_van.overlap(mask_fuego, offset):
+            colisiones += 1
+            tiros_boss.remove(tiro)
+    return colisiones
+

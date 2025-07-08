@@ -10,6 +10,7 @@ RUTA_VIDAS_BOSS = "assets/imagenes/vidas/boss_vida/"
 RUTA_ICONO_BOSS = RUTA_VIDAS_BOSS + "boss_icono.png"
 
 imagenes_vidas_vh = {
+    0: pygame.image.load(RUTA_VIDAS_VH + "vh0.png"),
     1: pygame.image.load(RUTA_VIDAS_VH + "vh1.png"),
     2: pygame.image.load(RUTA_VIDAS_VH + "vh2.png"),
     3: pygame.image.load(RUTA_VIDAS_VH + "vh3.png"),    
@@ -41,7 +42,7 @@ datos_van_helsing = {
 
 datos_boss = {
     "x": 400,
-    "y": 600,
+    "y": 20,
     "separacion": 10,
     "tamano": (60, 60)
 }
@@ -77,10 +78,10 @@ def dibujar_vidas_boss(pantalla, cantidad: int):
         pantalla (Surface): Superficie donde se dibuja.
         cantidad (int): Cantidad de vidas (de 0 a 10).
     """
-    vidas = max(0, min(10, cantidad))
+    vidas = cantidad
 
     pantalla.blit(icono_boss, (datos_boss["x"], datos_boss["y"]))
     pantalla.blit(imagenes_vidas_boss[vidas], ( 230 + 
-    datos_boss["tamano"][0] + datos_boss["separacion"],620)
+    datos_boss["tamano"][0] + datos_boss["separacion"],40)
                   
     )
