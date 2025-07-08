@@ -19,24 +19,22 @@ Monsters Hunter es un juego arcade 2D desarrollado en **Python con Pygame**, don
 
 MonstersHunter/
 │
-├── main.py # Archivo principal del juego
-├── funciones.py # Lógica del juego y helpers
-├── personajes/
-│ ├── van_hellsing.py # Datos y funciones de Van Helsing
-│ └── enemigos/
-│ └── vampiros.py # Generación y movimiento de vampiros
-├── tiros/
-│ └── propios.py # Disparo de flechas
-├── assets/
-│ ├── Imagenes/
-│ │ ├── VanHelsing/ # Sprites de Van Helsing
-│ │ ├── Vampiros/ # Sprites de los enemigos
-│ │ └── Fondo/ # Fondos y decoraciones
-│ └── Sonidos/
-│ └── disparo.wav # Efectos de sonido
-├── datos/
-│ └── ranking.json # Puntajes guardados
-└── README.md # Este archivo
+├── Config/                     # Configuraciones globales (constantes, tamaños, colores, etc.)
+├── assets/                     # Recursos visuales y sonoros (imágenes, sonidos, sprites)
+├── personajes/                 # Lógica de Van Helsing y enemigos
+├── tiros/                      # Gestión de disparos y proyectiles
+│
+├── __init__.py                 # Inicialización del módulo principal
+├── intro_animada.py           # Animación de introducción (scroll de texto)
+├── intro_1.py                 # Intro animada previa a jugar
+├── jugar.py                   # Lógica principal del juego en ejecución
+├── main.py                    # Punto de entrada del juego
+├── menu.py                    # Menú principal con opciones (Jugar, Ranking, Créditos, Salir)
+├── musica.py                  # Módulo que controla la música y los efectos de sonido
+├── puntuaciones1.json         # Archivo donde se guardan los puntajes de los jugadores
+├── ranking.py                 # Muestra el ranking y lee/escribe los puntajes
+├── utils.py                   # Funciones auxiliares compartidas
+├── vidas.py                   # Lógica de control de vidas del jugador
 
 
 ---
