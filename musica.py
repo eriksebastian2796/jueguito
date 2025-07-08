@@ -15,19 +15,23 @@ Importante:
 """
 
 import pygame
+#es necesario importar esta funcion para saber si el mouse esta sobre un boton
+from utils import esta_sobre
 
-# Rutas a los archivos de música y efectos
 RUTA_MUSICA = "assets/musica/musica_fondo/"
 RUTA_SFX = "assets/musica/fx/"
 
-# Efectos de sonido
 sfx_disparo = pygame.mixer.Sound(RUTA_SFX + "disparo_sfx.ogg")
 sfx_impacto = pygame.mixer.Sound(RUTA_SFX + "impacto_murcielago_sfx.ogg")
 sfx_vida = pygame.mixer.Sound(RUTA_SFX + "perder_vida_sfx.ogg")
+sfx_hover = pygame.mixer.Sound(RUTA_SFX +"hover.wav")
+sfx_click = pygame.mixer.Sound(RUTA_SFX +"seleccion.wav")
 
 sfx_disparo.set_volume(0.5)
 sfx_impacto.set_volume(0.5)
 sfx_vida.set_volume(0.5)
+sfx_hover.set_volume(0.6)
+sfx_click.set_volume(0.6)
 
 def reproducir_musica(nombre_archivo: str, loop: bool = True):
     
@@ -94,3 +98,34 @@ def sonido_vida():
     Reproduce el sonido cuando el jugador pierde una vida.
     """
     sfx_vida.play()
+    
+def reproducir_sonido_boton(mouse_pos : tuple, boton : dict,\
+    click_realizado : bool):
+    
+    """
+    Reproduce efectos de sonido cuando el mouse interactúa con un botón.
+
+    Usa una clave adicional `"hover_activo"` en el diccionario del botón para 
+    controlar si ya se reprodujo el sonido de hover y evitar repeticiones innecesarias.
+
+    Args:
+        mouse_pos (tuple): Posición actual del mouse como (x, y).
+        boton (dict): Diccionario con las claves "x", "y", "ancho", "alto"
+                      y opcionalmente "hover_activo" para seguimiento de sonido.
+        click_realizado (bool): True si se hizo clic con el mouse, False si no.
+        sonido_hover (pygame.mixer.Sound): Sonido a reproducir al pasar el mouse por el botón.
+        sonido_click (pygame.mixer.Sound): Sonido a reproducir al hacer clic sobre el botón.
+
+    """
+    
+    if esta_sobre(mouse_pos, boton):
+        
+        if not boton.get("hover_activo", False):
+            sfx_hover.play()
+            #sonido hover, es el sonido que hace cuando pasamos el mouse por encima
+            boton["hover_activo"] = True
+            
+        if click_realizado:
+            sfx_click.play()
+    else:
+        boton["hover_activo"] = False
