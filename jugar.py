@@ -61,9 +61,11 @@ from musica import (iniciar_musica_murcielagos,
 from ranking import (pedir_nombre,
                      guardar_puntaje)
 
+from intro_1 import intro_juego_parrafo
+
 def jugar(pantalla: pygame.Surface, sonido_activado = True):
 
-    jugando = True
+    jugando = intro_juego_parrafo(pantalla)
     van_hellsing["vidas"] = 5
     iniciar_musica_murcielagos()
 
