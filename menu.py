@@ -32,9 +32,7 @@ def mostrar_menu(pantalla):
     sonido_off_img = pygame.image.load("assets/iconos/sonido_off.png")
     sonido_off_img = pygame.transform.scale(sonido_off_img, (40, 40))
     
-    icono_sonido = sonido_on_img.get_rect()
-    icono_sonido.x = int(ANCHO * 0.10)
-    icono_sonido.y = int(ALTO * 0.80)
+    icono_sonido = pygame.Rect(430, 750, 40, 40)
     
     
     
@@ -86,7 +84,7 @@ def mostrar_menu(pantalla):
                 elif boton["texto"] == "Ranking":
                     mostrar_ranking(pantalla, fuente_principal_chica, fondo)
                 elif boton["texto"] == "Jugar":
-                    jugar(pantalla)
+                    jugar(pantalla, sonido_activado)
                 
                 
                     

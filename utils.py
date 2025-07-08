@@ -244,3 +244,16 @@ def detectar_colisiones_van_fuego(tiros_boss: list[dict], van_hellsing: dict, fr
             tiros_boss.remove(tiro)
     return colisiones
 
+def dibujar_icono_sonido(pantalla :pygame.Surface, icono_sonido: pygame.Rect, sonido_activado: bool):
+    
+    sonido_on_img = pygame.image.load("assets/iconos/sonido_on.png")
+    sonido_on_img = pygame.transform.scale(sonido_on_img, (40, 40))
+    
+    sonido_off_img = pygame.image.load("assets/iconos/sonido_off.png")
+    sonido_off_img = pygame.transform.scale(sonido_off_img, (40, 40))
+
+    if sonido_activado:
+        pantalla.blit(sonido_on_img, (icono_sonido.x, icono_sonido.y))
+    else:
+        pantalla.blit(sonido_off_img, (icono_sonido.x, icono_sonido.y))
+

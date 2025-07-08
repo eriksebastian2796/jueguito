@@ -22,14 +22,18 @@ RUTA_MUSICA = "assets/musica/musica_fondo/"
 RUTA_SFX = "assets/musica/fx/"
 
 sfx_disparo = pygame.mixer.Sound(RUTA_SFX + "disparo_sfx.ogg")
+sfx_rugido = pygame.mixer.Sound(RUTA_SFX + "rugido.ogg")
 sfx_impacto = pygame.mixer.Sound(RUTA_SFX + "impacto_murcielago_sfx.ogg")
+sfx_fuego =  pygame.mixer.Sound(RUTA_SFX + "fueguito.ogg")
 sfx_vida = pygame.mixer.Sound(RUTA_SFX + "perder_vida_sfx.ogg")
 sfx_hover = pygame.mixer.Sound(RUTA_SFX +"hover.wav")
 sfx_click = pygame.mixer.Sound(RUTA_SFX +"seleccion.wav")
 
-sfx_disparo.set_volume(0.5)
-sfx_impacto.set_volume(0.5)
-sfx_vida.set_volume(0.5)
+sfx_disparo.set_volume(1)
+sfx_rugido.set_volume(1)
+sfx_impacto.set_volume(1.5)
+sfx_fuego.set_volume(1)
+sfx_vida.set_volume(1)
 sfx_hover.set_volume(0.6)
 sfx_click.set_volume(0.6)
 
@@ -57,7 +61,7 @@ def iniciar_musica_intro():
     
     reproducir_musica("musica_intro.ogg")
 
-def iniciar_batalla_murcielagos():
+def iniciar_musica_murcielagos():
     
     """
     Inicia la música del juego general.
@@ -65,7 +69,7 @@ def iniciar_batalla_murcielagos():
     
     reproducir_musica("musica_batalla_murcielagos.ogg")
     
-def iniciar_boss():
+def iniciar_musica_boss():
     
     """
     Inicia la música del boss.
@@ -87,11 +91,24 @@ def sonido_disparo():
     """
     sfx_disparo.play()
 
+def sonido_disparo_boss():
+    """
+    Reproduce el sonido del ataque del boss.
+    """
+    sfx_rugido.play()
+
+
 def sonido_impacto():
     """
     Reproduce el sonido cuando una flecha impacta en un enemigo.
     """
     sfx_impacto.play()
+
+def sonido_fuego():
+    """
+    Reproduce el sonido cuando una ataque del booss impacta en un Van.
+    """
+    sfx_fuego.play()
 
 def sonido_vida():
     """
@@ -129,3 +146,18 @@ def reproducir_sonido_boton(mouse_pos : tuple, boton : dict,\
             sfx_click.play()
     else:
         boton["hover_activo"] = False
+
+
+def des_mutear(sonido_activado: bool):
+    """
+    Establece el volumen de la música de fondo según el estado del sonido.
+    
+    Parámetros:
+        sonido_activado (bool): True para activar el sonido, False para mutear.
+    """
+    if sonido_activado:
+        volumen = 1
+    else:
+        volumen = 0
+
+    pygame.mixer.music.set_volume(volumen)

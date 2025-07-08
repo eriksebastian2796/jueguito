@@ -4,7 +4,8 @@ from utils import (cargar_frames,
                    detectar_colisiones,
                    detectar_colisiones_van,
                    detectar_colisiones_boss,
-                   detectar_colisiones_van_fuego)
+                   detectar_colisiones_van_fuego,
+                   dibujar_icono_sonido)
 
 from Config.CONSTANTES import (ANCHO,
                                ALTO,
@@ -47,20 +48,24 @@ from tiros.boss import (disparar_boss,
 from vidas import (dibujar_vidas_vh, 
                    dibujar_vidas_boss)
 
-from musica import (iniciar_batalla_murcielagos,
-                    iniciar_boss,
+from musica import (iniciar_musica_murcielagos,
+                    iniciar_musica_boss,
                     sonido_impacto,
                     sonido_disparo,
-                    sonido_vida)
+                    sonido_disparo_boss,
+                    sonido_vida,
+                    des_mutear,
+                    sonido_fuego,
+                    )
 
 from ranking import (pedir_nombre,
                      guardar_puntaje)
 
-def jugar(pantalla: pygame.Surface):
+def jugar(pantalla: pygame.Surface, sonido_activado = True):
 
     jugando = True
     van_hellsing["vidas"] = 5
-    iniciar_batalla_murcielagos()
+    iniciar_musica_murcielagos()
 
     fondo = pygame.image.load(r"assets\Imagenes\Fondo\Fondo_8bit2.jpg")
     fondo = pygame.transform.scale(fondo, (480, 800))
@@ -75,7 +80,7 @@ def jugar(pantalla: pygame.Surface):
 
     tiempo_de_juego = 0
     timer_murcielago = 0
-    timer_disparo_boss = -10
+    timer_disparo_boss = -3
     
     puntaje = 0
 
@@ -98,6 +103,8 @@ def jugar(pantalla: pygame.Surface):
     flag_inicio_boss = False
     flag_tiro_boss = False
 
+    icono_sonido = pygame.Rect(430, 750, 40, 40)
+
     while jugando:    
         pantalla.blit(fondo, (0,0))
             
@@ -106,6 +113,13 @@ def jugar(pantalla: pygame.Surface):
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 jugando = False
+
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                mouseX, mouseY = pygame.mouse.get_pos()
+                if icono_sonido.collidepoint(mouseX, mouseY):
+                    sonido_activado = not sonido_activado
+                    des_mutear(sonido_activado)
+
                 
             if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_SPACE:
@@ -179,6 +193,7 @@ def jugar(pantalla: pygame.Surface):
         dibujar_personaje(pantalla, frames_van)
         dibujar_tiros(pantalla, tiros)
         dibujar_vidas_vh(pantalla, van_hellsing["vidas"])
+        dibujar_icono_sonido(pantalla, icono_sonido, sonido_activado)
 
         fuente = pygame.font.SysFont(FUENTE_MENU, 24)
         texto = fuente.render(f"Puntaje: {puntaje}", True, (255,255,255))
@@ -192,6 +207,7 @@ def jugar(pantalla: pygame.Surface):
 
             if flag_inicio_boss:
                 boss = inicio_boss()
+                iniciar_musica_boss()
                 flag_inicio_boss = False
         
             if boss["y"] < 0:
@@ -207,6 +223,7 @@ def jugar(pantalla: pygame.Surface):
                 tiros_boss.append(tiros_nuevo[0])
                 tiros_boss.append(tiros_nuevo[1])
                 tiros_boss.append(tiros_nuevo[2])
+                sonido_disparo_boss()
                 timer_disparo_boss = 0
                 flag_tiro_boss = True
 
@@ -221,7 +238,7 @@ def jugar(pantalla: pygame.Surface):
             daño_fuego = detectar_colisiones_van_fuego(tiros_boss, van_hellsing, frames_fuego, frames_van)
             if daño_fuego > 0:
                 van_hellsing["vidas"] -= daño_fuego
-                sonido_vida()
+                sonido_fuego()
 
 
             dibujar_boss(pantalla, boss)
@@ -241,6 +258,8 @@ def jugar(pantalla: pygame.Surface):
             if boss["vidas"] <= 0:
                 boss_activo = False
                 boss_derrotado = True
+                sonido_disparo_boss()
+                iniciar_musica_murcielagos()
                 puntaje += 1000
         
         pygame.display.flip()
