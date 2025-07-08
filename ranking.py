@@ -6,13 +6,15 @@ de los mejores puntajes de los jugadores
 import json
 import os
 import pygame
-from Config.CONSTANTES import ANCHO, ALTO, BLANCO, NEGRO
+from Config.CONSTANTES import ANCHO, ALTO, BLANCO, FUENTE_MENU
 
 ARCHIVO_PUNTOS = "puntuaciones1.json"
+fondo = pygame.image.load("assets/fondos/fondo_creditos.jpg")
+fondo = pygame.transform.scale(fondo, (ANCHO, ALTO))
 
 def pedir_nombre(pantalla):
     nombre = ""
-    font = pygame.font.Font(None, 36)
+    font = pygame.font.Font(FUENTE_MENU, 30)
     reloj = pygame.time.Clock()
 
     while True:
@@ -29,8 +31,8 @@ def pedir_nombre(pantalla):
                     if len(nombre) < 12:
                         nombre += evento.unicode
 
-        pantalla.fill(NEGRO)
-        pantalla.blit(font.render("¡Perdiste! Ingresa tu nombre:", True, BLANCO), (ANCHO // 2 - 150, 200))
+        pantalla.blit(fondo, (0, 0))
+        pantalla.blit(font.render("¡Perdiste! Ingresa tu nombre:", True, BLANCO), (ANCHO // 2 - 210, 200))
         pantalla.blit(font.render(nombre + "|", True, BLANCO), (ANCHO // 2 - 100, 300))
         pygame.display.flip()
         reloj.tick(60)
