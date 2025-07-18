@@ -5,7 +5,9 @@ from utils import (cargar_frames,
                    detectar_colisiones_van,
                    detectar_colisiones_boss,
                    detectar_colisiones_van_fuego,
-                   dibujar_icono_sonido)
+                   dibujar_icono_sonido,
+                   mostrar_game_over,
+                   mostrar_ganaste)
 
 from Config.constantes import (ANCHO,
                                ALTO,
@@ -50,12 +52,14 @@ from vidas import (dibujar_vidas_vh,
 
 from musica import (iniciar_musica_murcielagos,
                     iniciar_musica_boss,
+                    reproducir_musica,
                     sonido_impacto,
                     sonido_disparo,
                     sonido_disparo_boss,
                     sonido_vida,
                     des_mutear,
                     sonido_fuego,
+                    detener_musica
                     )
 
 from ranking import (pedir_nombre,
@@ -263,10 +267,20 @@ def jugar(pantalla: pygame.Surface, sonido_activado = True):
                 sonido_disparo_boss()
                 iniciar_musica_murcielagos()
                 puntaje += 1000
+                jugando = False
         
         pygame.display.flip()
         reloj.tick(FPS)
-    else: 
+    else:
+        if van_hellsing["vidas"] <= 0:
+            mostrar_game_over(pantalla)
+        elif boss_derrotado:
+            mostrar_ganaste(pantalla)
+
+        detener_musica()
+        reproducir_musica("musica_menu.ogg", True)
+        
         nombre = pedir_nombre(pantalla)
         guardar_puntaje(nombre, puntaje)
+        
 

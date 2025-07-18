@@ -2,7 +2,7 @@
 """
 
 import pygame
-from Config.constantes import ANCHO, ALTO, BLANCO
+from Config.constantes import ANCHO, ALTO, BLANCO, FUENTE_MENU
 
 def esta_sobre(mouse_pos : tuple, boton : dict)-> bool:
     
@@ -256,4 +256,23 @@ def dibujar_icono_sonido(pantalla :pygame.Surface, icono_sonido: pygame.Rect, so
         pantalla.blit(sonido_on_img, (icono_sonido.x, icono_sonido.y))
     else:
         pantalla.blit(sonido_off_img, (icono_sonido.x, icono_sonido.y))
+        
+def mostrar_game_over(pantalla: pygame.Surface):
+    pantalla.fill((0, 0, 0)) 
+    fuente = pygame.font.Font(FUENTE_MENU, 48)
+    texto = fuente.render("GAME OVER", True, (255, 0, 0)) 
+    pantalla.blit(texto, (ANCHO // 2 - texto.get_width() // 2,
+                          ALTO // 2 - texto.get_height() // 2))
+    pygame.display.flip()
+    pygame.time.wait(2000)
+
+def mostrar_ganaste(pantalla: pygame.Surface):
+    pantalla.fill((0, 0, 0)) 
+    fuente = pygame.font.Font(FUENTE_MENU, 48)
+    texto = fuente.render("¡GANASTE!", True, (255, 255, 255)) 
+    pantalla.blit(texto, (ANCHO // 2 - texto.get_width() // 2,
+                          ALTO // 2 - texto.get_height() // 2))
+    pygame.display.flip()
+    pygame.time.wait(2000)
+
 
