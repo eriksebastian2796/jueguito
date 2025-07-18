@@ -156,7 +156,7 @@ def des_mutear(sonido_activado: bool):
         sonido_activado (bool): True para activar el sonido, False para mutear.
     """
     if sonido_activado:
-        volumen = 1
+        volumen = 0.6
     else:
         volumen = 0
 

@@ -1,6 +1,6 @@
 import pygame
 import pygame.mixer
-from Config.CONSTANTES import ANCHO, ALTO
+from Config.constantes import ANCHO, ALTO
 from intro_animada import intro_con_animacion
 from menu import mostrar_menu
 

@@ -1,6 +1,6 @@
 import pygame
 import random
-from Config.CONSTANTES import (ANCHO,
+from Config.constantes import (ANCHO,
                                ALTO)
 
 def crear_murcielago(nivel: int)-> dict:

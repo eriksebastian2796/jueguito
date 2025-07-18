@@ -1,5 +1,5 @@
 import pygame
-from Config.CONSTANTES import FUENTE_MENU, AMARILLO, ANCHO, ALTO
+from Config.constantes import FUENTE_MENU, AMARILLO, ANCHO, ALTO
 from musica import iniciar_musica_intro, detener_musica, sfx_click
 
 pygame.init()
@@ -27,7 +27,7 @@ def cargar_recursos():
 
     
     resoluciones = {
-        10: (ANCHO, 800), 9: (500, 400), 8: (200, 200), 7: (200, 100),
+        10: (ANCHO, ALTO), 9: (500, 400), 8: (200, 200), 7: (200, 100),
         6: (500, 400), 5: (400, 300), 4: (200, 100), 3: (600, 700),
         2: (220, 100), 1: (600, 400), 0: (600, 300)
     }
@@ -104,15 +104,11 @@ def dibujar_desplazamiento_fondo(nombre, scrolls, velocidades, posiciones, image
         scrolls[nombre] -= velocidades[nombre]
         if scrolls[nombre] <= -ANCHO:
             scrolls[nombre] = 0
-            
-        """Cuando la posición horizontal llega a -ANCHO,
-        quiere decir que el fondo se desplazó una pantalla entera hacia la izquierda y ya no se ve.
-        Entonces, para que el fondo vuelva a aparecer desde el lado derechoreseteamos la posición a 0.
-        """
+    #Una vez recorrido el ancho de la pantalla, se vuelve a la izquierda
             
     else:
         
-        #Si el sentido no es "izq" es "der" entonces hacemos lo contrario:
+    #Si el sentido no es "izq" es "der" entonces hacemos lo contrario:
         
         scrolls[nombre] += velocidades[nombre]
         if scrolls[nombre] >= ANCHO:
@@ -162,12 +158,8 @@ def renderizar_fondos(imagenes, posiciones, scrolls, velocidades,
     dibujar_desplazamiento_fondo("fondo2", scrolls, velocidades, posiciones, imagenes, pantalla, "der")
 
     for nombre in scrolls_niebla:
-        #scrolls_niebla es un diccionario que guarda la posición horizontal actual de las capas de niebla
         
-        """En cada ciclo del bucle:
-        Se incrementa la posición horizontal de la niebla según su velocidad.
-        Cuando la posición supera el ancho de pantalla , se reinicia a 0 para hacer el efecto infinito.
-        """
+        #scrolls_niebla es un diccionario que guarda la posición horizontal actual de las capas de niebla
         
         scrolls_niebla[nombre] += velocidades_niebla[nombre]
         if scrolls_niebla[nombre] >= ANCHO:
@@ -221,15 +213,7 @@ def intro_con_animacion(pantalla):
         renderizar_fondos(imagenes, posiciones, scrolls, velocidades,
                           scrolls_niebla, velocidades_niebla, pantalla)
         
-        
-        """En cada ciclo del bucle:
-            Se muestra el texto "Press Start" en la pantalla.
-            
-            Acumula el tiempo en milisegundos que pasó desde la última iteración del bucle.
-            Cuando llega a 500 ms, cambia la visibilidad del texto mostrar_texto
-            (de mostrar a ocultar o viceversa).
-            Esto genera un efecto de parpadeo del texto "Press Start".
-        """
+        #Efecto "Press Start" con parpadeo
         
         tiempo_texto += reloj.get_time()
         if tiempo_texto > 500:

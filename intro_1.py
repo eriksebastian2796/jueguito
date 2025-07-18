@@ -1,5 +1,6 @@
 import pygame
 import random
+from Config.constantes import ANCHO, ALTO, FPS,BLANCO, AMARILLO, ROJO, FUENTE_MENU
 from utils import (esta_sobre,)
 
 def intro_juego_parrafo(pantalla):
@@ -23,40 +24,39 @@ def intro_juego_parrafo(pantalla):
             continuar con el juego.
             False si el jugador cierra la ventana, útil para interrumpir el flujo.
     """
-   # --- Configuración de pantalla y constantes ---
-    ANCHO = 480
-    ALTO = 800
-    FPS = 60
 
-    BLANCO = (255, 255, 255)
-    ROJO = (255, 0, 0)
-    AZUL = (0, 0, 255)
-    AMARILLO = (255, 255, 0)
-
-    FUENTE_MENU = "assets/fuentes/arcade_font.ttf"
 
     reloj = pygame.time.Clock()
-    fuente_menu = pygame.font.Font(FUENTE_MENU, 14)
+    fuente_menu = pygame.font.Font(FUENTE_MENU, 18)
 
     # Carga de imágenes
     titulo_img = pygame.image.load("assets/fuentes/Titulo.png")
     titulo_img = pygame.transform.scale(titulo_img, (400, 400))
-    fondo = pygame.image.load("assets/fondos/fondo_menu.jpg").convert()
+    fondo = pygame.image.load("assets/fondos/fondo_intro.jpg")
     fondo = pygame.transform.scale(fondo, (ANCHO, ALTO))
 
     # Definición de botón
-    botones = [{"texto": "Saltar Intro", "x": 320, "y": 680, "ancho": 100, "alto": 60}]
+    botones = [{"texto": "Saltar Intro", "x": 320, "y": 720, "ancho": 100, "alto": 60}]
     for boton in botones:
         boton["hover_activo"] = False
 
     # Texto introductorio dividido en líneas
     parrafo = [
-        "...En Monsters Hunters, te convertirás en Van Helsing,",
-        "el legendario cazador de criaturas de la noche.",
-        "La ciudad ha caído en la oscuridad y los monstruos acechan.",
-        "Tu misión es clara: eliminarlos antes de que sea tarde.",
-        "¡Cada segundo cuenta! Estás listo para enfrentarte a la oscuridad..."
+        "La noche ha caído sobre el pueblo de Vörhelm.",
+        "Sombras acechan en cada rincón,",
+        "y los aldeanos viven con miedo.",
+        "Los vampiros no dejan de multiplicarse,",
+        "guiados por un poder antiguo y oscuro...",
+        "El Rey Vampiro ha despertado.",
+        "Solo uno puede detener esta pesadilla:",
+        "Van Helsing, el legendario cazador.",
+        "Para acabar con la maldición,",
+        "deberá enfrentarse al mismísimo señor de la noche.",
+        " ",
+        "¿Podrás detenerlo antes ",
+        "de que la oscuridad consuma el mundo?"
     ]
+    
     x_parrafo = 20           # Margen izquierdo del párrafo
     y_parrafo = 550          # Posición inicial vertical
     y_limite = 400           # Altura a la que debe detenerse
@@ -94,7 +94,7 @@ def intro_juego_parrafo(pantalla):
         for coor in coor_lluvia:
             x = coor[0]
             y = coor[1]
-            pygame.draw.circle(pantalla, AZUL, (x, y), 1)
+            pygame.draw.circle(pantalla, BLANCO, (x, y), 1)
             coor[1] += 1
             if coor[1] > 800:
                 coor[1] = 0 
@@ -108,7 +108,7 @@ def intro_juego_parrafo(pantalla):
 
         # Hacer que el párrafo suba hasta el límite definido
         if y_parrafo > y_limite:
-            y_parrafo -= 1
+            y_parrafo -= 0.5
 
         # Evaluación y render de botones
         for boton in botones:

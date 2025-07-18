@@ -7,7 +7,7 @@ from utils import (cargar_frames,
                    detectar_colisiones_van_fuego,
                    dibujar_icono_sonido)
 
-from Config.CONSTANTES import (ANCHO,
+from Config.constantes import (ANCHO,
                                ALTO,
                                FPS,
                                SEGUNDO,
@@ -70,7 +70,7 @@ def jugar(pantalla: pygame.Surface, sonido_activado = True):
     iniciar_musica_murcielagos()
 
     fondo = pygame.image.load(r"assets\Imagenes\Fondo\Fondo_8bit2.jpg")
-    fondo = pygame.transform.scale(fondo, (480, 800))
+    fondo = pygame.transform.scale(fondo, (ANCHO, ALTO))
 
     reloj = pygame.time.Clock()
 

@@ -1,6 +1,5 @@
 import pygame
-import pygame.mixer
-from Config.CONSTANTES import ANCHO, ALTO, FPS,BLANCO, AMARILLO, ROJO, FUENTE_MENU
+from Config.constantes import ANCHO, ALTO, FPS,BLANCO, AMARILLO, ROJO, FUENTE_MENU
 
 from utils import (esta_sobre, 
                    cambio_color_boton, 
@@ -38,6 +37,8 @@ def mostrar_menu(pantalla):
     
     fondo = pygame.image.load("assets/fondos/fondo_menu.jpg")
     fondo = pygame.transform.scale(fondo, (ANCHO, ALTO))
+    fondo_ranking = pygame.image.load("assets/fondos/fondo_creditos.jpg")
+    fondo_ranking = pygame.transform.scale(fondo_ranking, (ANCHO, ALTO))
     
     botones = [
         {"texto": "Jugar", "x": 185, "y": 450, "ancho": 100, "alto": 35},
@@ -82,7 +83,7 @@ def mostrar_menu(pantalla):
                 elif boton["texto"] == "Creditos":
                     mostrar_creditos(pantalla, creditos, reloj, FUENTE_MENU)
                 elif boton["texto"] == "Ranking":
-                    mostrar_ranking(pantalla, fuente_principal_chica, fondo)
+                    mostrar_ranking(pantalla, fuente_principal_chica, fondo_ranking)
                 elif boton["texto"] == "Jugar":
                     jugar(pantalla, sonido_activado)
                 

@@ -2,7 +2,7 @@
 """
 
 import pygame
-from Config.CONSTANTES import ANCHO, ALTO, BLANCO
+from Config.constantes import ANCHO, ALTO, BLANCO
 
 def esta_sobre(mouse_pos : tuple, boton : dict)-> bool:
     

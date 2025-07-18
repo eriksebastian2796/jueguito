@@ -2,7 +2,7 @@ import pygame
 
 from utils import cargar_frames
 
-from Config.CONSTANTES import (ALTO, 
+from Config.constantes import (ALTO, 
                                ANCHO)
 
 

@@ -6,7 +6,7 @@ de los mejores puntajes de los jugadores
 import json
 import os
 import pygame
-from Config.CONSTANTES import ANCHO, ALTO, BLANCO, FUENTE_MENU
+from Config.constantes import ANCHO, ALTO, BLANCO, FUENTE_MENU
 
 ARCHIVO_PUNTOS = "puntuaciones1.json"
 fondo = pygame.image.load("assets/fondos/fondo_creditos.jpg")

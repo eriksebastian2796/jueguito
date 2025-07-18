@@ -1,8 +1,6 @@
 import pygame
 from utils import cargar_frames
 
-from Config.CONSTANTES import (ALTO, 
-                               ANCHO)
 
 frames_boss_vuelo = cargar_frames(r"assets\Imagenes\boss\boss", 6)
 frames_boss_ataque = cargar_frames(r"assets\Imagenes\boss\boss_ataque", 6)

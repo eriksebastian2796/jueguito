@@ -1,5 +1,5 @@
 import pygame
-from Config.CONSTANTES import (ANCHO,
+from Config.constantes import (ANCHO,
                                ALTO)
 
 dimension_van = (90, 110)
